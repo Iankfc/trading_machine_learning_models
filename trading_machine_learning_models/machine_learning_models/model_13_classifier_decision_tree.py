@@ -19,7 +19,8 @@ warnings.filterwarnings('ignore')
 def func_run_model(x_train = None,
                     x_test = None,
                     y_train = None,
-                    y_test = None):
+                    y_test = None,
+                    **kwargs):
     
     """
     https://scikit-learn.org/stable/modules/tree.html

@@ -21,7 +21,8 @@ warnings.filterwarnings('ignore')
 def func_run_model(x_train = None,
                     x_test = None,
                     y_train = None,
-                    y_test = None):
+                    y_test = None,
+                    **kwargs):
     
     model = GradientBoostingClassifier(n_estimators=100, learning_rate=1.0,
                                          max_depth=1, random_state=0)

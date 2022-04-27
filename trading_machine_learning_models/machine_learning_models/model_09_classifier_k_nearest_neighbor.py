@@ -4,16 +4,18 @@ from sklearn.neighbors import KNeighborsClassifier
 import pandas as pd
 from sklearn.metrics import mean_absolute_error, mean_squared_error, confusion_matrix, accuracy_score
 from matplotlib import pyplot as plt
-from .module_dict_model_result import func_dict_model_results
-
-
+try:
+    from .module_dict_model_result import func_dict_model_results
+except ImportError:
+    from module_dict_model_result import func_dict_model_results
 
 #%%
 
 def func_run_model(x_train = None,
                     x_test = None,
                     y_train = None,
-                    y_test = None):
+                    y_test = None,
+                    **kwargs):
     
     """
     https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html#sklearn.neighbors.KNeighborsClassifier

@@ -39,12 +39,18 @@ class test_machine_learning_models(unittest.TestCase):
     def test_model01(self):
         
         #Act
+        dict_hyperparameters = {'n_estimators':100,
+                            'max_depth':5}
+        
         dict_model_results = model01.func_run_model( x_train = self.x_train,
                                                     x_test = self.x_test,
                                                     y_train = self.y_train,
                                                     y_test = self.y_test,
-                                                    int_random_forest_number_of_trees_estimator = 1000,
-                                                    int_random_forest_max_dept = 5)
+                                                     **dict_hyperparameters)
+        
+        
+   
+    
         str_result = len(dict_model_results)
         
         #Assert
@@ -53,11 +59,17 @@ class test_machine_learning_models(unittest.TestCase):
     def test_model02(self):
         
         #Act
+        
+        dict_hyperparameters = {'solver':'lbfgs', 
+                        'alpha':1e-5,
+                        'hidden_layer_sizes':(5,2), 
+                        'random_state':1}
+            
         dict_model_results = model02.func_run_model( x_train = self.x_train,
                                                     x_test = self.x_test,
                                                     y_train = self.y_train,
                                                     y_test = self.y_test,
-                                                    tuple_hidden_layer=(5,2))
+                                                    **dict_hyperparameters)
         str_result = len(dict_model_results)
         
         #Assert

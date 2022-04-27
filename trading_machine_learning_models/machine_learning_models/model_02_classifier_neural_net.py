@@ -20,10 +20,12 @@ def func_run_model(x_train = None,
                     x_test = None,
                     y_train = None,
                     y_test = None,
-                    tuple_hidden_layer = None):
+                    **kwargs):
 
-    model = MLPClassifier(solver='lbfgs', alpha=1e-5,
-                          hidden_layer_sizes=tuple_hidden_layer, random_state=1)
+    model = MLPClassifier(solver=kwargs.get('solver'), 
+                          alpha=kwargs.get('alpha'),
+                          hidden_layer_sizes=kwargs.get('hidden_layer_sizes'), 
+                          random_state=kwargs.get('random_state'))
 
     model.fit(X = x_train, y = y_train)
     
@@ -77,12 +79,16 @@ if __name__ == '__main__':
     x_train, x_test, y_train, y_test = train_test_split(x,y, 
                                                     train_size = 0.50,
                                                     shuffle= False)
+    dict_hyperparameters = {'solver':'lbfgs', 
+                          'alpha':1e-5,
+                          'hidden_layer_sizes':(5,2), 
+                          'random_state':1}
     
     dict_model_results = func_run_model(x_train = x_train,
                                         x_test = x_test,
                                         y_train = y_train,
                                         y_test = y_test,
-                                        tuple_hidden_layer = (5,2))
+                                        **dict_hyperparameters )
 
     df_prediction = dict_model_results['df_prediction']
     df_feature_importance =  dict_model_results['df_feature_importance']

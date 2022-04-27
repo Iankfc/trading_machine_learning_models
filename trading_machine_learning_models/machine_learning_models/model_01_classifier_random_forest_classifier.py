@@ -19,11 +19,10 @@ def func_run_model(x_train = None,
                     x_test = None,
                     y_train = None,
                     y_test = None,
-                    int_random_forest_number_of_trees_estimator = None,
-                    int_random_forest_max_dept = None):
+                    **kwargs):
 
-  model = rf(n_estimators = int_random_forest_number_of_trees_estimator, 
-            max_depth = int_random_forest_max_dept)
+  model = rf(n_estimators = kwargs.get('n_estimators'), 
+            max_depth =  kwargs.get('max_depth'))
 
   model.fit(X = x_train, y = y_train)
   
@@ -79,13 +78,23 @@ if __name__ == '__main__':
                                                     train_size = 0.50,
                                                     shuffle= False)
     
+    
+    dict_hyperparameters = {'n_estimators':100,
+                            'max_depth':5}
+                                        
+                                        
     dict_model_results = func_run_model(x_train = x_train,
                                         x_test = x_test,
                                         y_train = y_train,
                                         y_test = y_test,
-                                        int_random_forest_number_of_trees_estimator = 1000,
-                                        int_random_forest_max_dept = 5)
+                                        **dict_hyperparameters)
 
     df_prediction = dict_model_results['df_prediction']
     df_feature_importance =  dict_model_results['df_feature_importance']
     accuracy_score =  dict_model_results['float_accuracy_score']
+    
+    
+    
+#%%
+
+

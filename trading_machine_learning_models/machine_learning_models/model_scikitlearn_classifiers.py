@@ -32,23 +32,44 @@ import numpy as np
 from datetime import datetime
 import json
 
-def func_list_class_ml_classifier_models():
-    list_class_ml_classifier_models = [RandomForestClassifier,
-                                        MLPClassifier,
-                                        GradientBoostingClassifier,
-                                        SVC,
-                                        LinearDiscriminantAnalysis,
-                                        RidgeClassifier,
-                                        SGDClassifier,
-                                        KNeighborsClassifier,
-                                        GaussianProcessClassifier,
-                                        GaussianNB,
-                                        BernoulliNB,
-                                        DecisionTreeClassifier,
-                                        ExtraTreesClassifier,
-                                        AdaBoostClassifier
-                                        ]
-    return list_class_ml_classifier_models
+def func_dict_list_class_ml_classifier_models_format():
+    
+    nparray_n_estimators = list(np.arange(1,10,1, dtype=int))
+    nparray_max_depth = list(np.arange(1,10,1, dtype=int))
+
+    dict_list_class_ml_classifier_models = { 0: [RandomForestClassifier, 
+                                            {'n_estimators':nparray_n_estimators,
+                                            'max_depth':nparray_max_depth
+                                            }
+                                            ],
+                                            1: [MLPClassifier,
+                                                        {}],
+                                            2: [GradientBoostingClassifier,
+                                                        {}],
+                                            3: [SVC,
+                                                        {}],
+                                            4: [LinearDiscriminantAnalysis,
+                                                        {}],
+                                            5: [RidgeClassifier,
+                                                        {}],
+                                            6: [SGDClassifier,
+                                                        {}],
+                                            7: [KNeighborsClassifier,
+                                                        {}],
+                                            8: [GaussianProcessClassifier,
+                                                        {}],
+                                            9: [GaussianNB,
+                                                        {}],
+                                            10: [BernoulliNB,
+                                                        {}],
+                                            11: [DecisionTreeClassifier,
+                                                        {}],
+                                            12: [ExtraTreesClassifier,
+                                                        {}],
+                                            13: [AdaBoostClassifier,
+                                                        {}]
+                                            }
+    return dict_list_class_ml_classifier_models
 
 
 #%%
@@ -112,45 +133,65 @@ if __name__ == '__main__':
                                                     shuffle= False)
     
     
-#     nparray_n_estimators = np.arange(1,10,1)
-#     nparray_max_depth = np.arange(1,10,1)
-    
-#     dict_nparray_hyperparameters = {'n_estimators':nparray_n_estimators,
-#                                     'max_depth':nparray_max_depth}
-    
-#     dict_nparray_hyperparameters = {'hidden_layer_sizes':[(5,2),(6,2),(1000,100,2)]}
-                                        
-#     df_prediction = func_run_model(x_train = x_train,
-#                                     x_test = x_test,
-#                                     y_train = y_train,
-#                                     y_test = y_test,
-#                                     class_machine_learning_model = MLPClassifier,
-#                                     **dict_nparray_hyperparameters)
-
-#     
-    
     
     
 #%%
+#%% Use this function to get the dictionary format at which you can manually edit the list of hyper parameters
+dict_list_class_ml_classifier_models = func_dict_list_class_ml_classifier_models_format()
 
-list_class_ml_classifier_models = func_list_class_ml_classifier_models()
-
-df_prediction = pd.DataFrame({})
+#%% You can manually edit the hyper parameters
 nparray_n_estimators = list(np.arange(1,10,1, dtype=int))
 nparray_max_depth = list(np.arange(1,10,1, dtype=int))
 
-dict_list_hyperparameters = {'n_estimators':nparray_n_estimators,
-                                'max_depth':nparray_max_depth}
+dict_list_class_ml_classifier_models = { 0: [RandomForestClassifier, 
+                                        {'n_estimators':nparray_n_estimators,
+                                        'max_depth':nparray_max_depth
+                                        }
+                                        ],
+                                        1: [MLPClassifier,
+                                                    {}],
+                                        2: [GradientBoostingClassifier,
+                                                    {}],
+                                        3: [SVC,
+                                                    {}],
+                                        4: [LinearDiscriminantAnalysis,
+                                                    {}],
+                                        5: [RidgeClassifier,
+                                                    {}],
+                                        6: [SGDClassifier,
+                                                    {}],
+                                        7: [KNeighborsClassifier,
+                                                    {}],
+                                        8: [GaussianProcessClassifier,
+                                                    {}],
+                                        9: [GaussianNB,
+                                                    {}],
+                                        10: [BernoulliNB,
+                                                    {}],
+                                        11: [DecisionTreeClassifier,
+                                                    {}],
+                                        12: [ExtraTreesClassifier,
+                                                    {}],
+                                        13: [AdaBoostClassifier,
+                                                    {}]
+                                        }
 
-for class_models in list_class_ml_classifier_models[:1]:
-    print(class_models.__name__)
+
+
+
+df_prediction = pd.DataFrame({})
+for keys, tuple_class_models in dict_list_class_ml_classifier_models.items():
+    class_model = tuple_class_models[0]
+    dict_list_hyperparameters = tuple_class_models[1]
+    
+    print(class_model.__name__)
     
     df_temp = func_run_model(x_train = x_train,
                                     x_test = x_test,
                                     y_train = y_train,
                                     y_test = y_test,
                                     bool_include_x_train_independent_variables = False,
-                                    class_machine_learning_model = class_models,
+                                    class_machine_learning_model = class_model,
                                     **dict_list_hyperparameters)
 
     df_prediction = df_prediction.append(df_temp,
@@ -158,22 +199,20 @@ for class_models in list_class_ml_classifier_models[:1]:
     
 df_prediction['RunDate'] = datetime.today().strftime('%Y-%m-%d')
 df_prediction['RunTime'] = datetime.today().strftime('%H:%M:%S')
-  
-
-
 df_prediction.to_csv('Output.csv')
 
 # %%
 
-engine = sqlalchemy.create_engine('postgresql://postgres:1234@localhost:5432/db_sample')
-df_prediction.to_sql('tbl_model_simulation', 
-                    con = engine,
-                    if_exists='replace',
-                    index = False,
-                    dtype={'Actual':sqlalchemy.types.INT,
-                           'Prediction':sqlalchemy.types.INT,
-                           'GridSearchParameters':sqlalchemy.types.JSON,
-                           'GridSearchBestParameters':sqlalchemy.types.JSON})
+# engine = sqlalchemy.create_engine('postgresql://postgres:1234@localhost:5432/db_sample')
+# df_prediction.to_sql('tbl_model_simulation', 
+#                     con = engine,
+#                     if_exists='replace',
+#                     index = False,
+#                     dtype={'Actual':sqlalchemy.types.INT,
+#                            'Prediction':sqlalchemy.types.INT,
+#                            'GridSearchParameters':sqlalchemy.types.JSON,
+#                            'GridSearchBestParameters':sqlalchemy.types.JSON})
 
 
 # %%
+

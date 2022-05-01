@@ -14,7 +14,7 @@ from sklearn.naive_bayes import BernoulliNB
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.ensemble import AdaBoostClassifier
-import sqlalchemy 
+
 
 #%% Import miscellanous modules
 from sklearn.datasets import make_classification
@@ -201,17 +201,7 @@ df_prediction['RunDate'] = datetime.today().strftime('%Y-%m-%d')
 df_prediction['RunTime'] = datetime.today().strftime('%H:%M:%S')
 df_prediction.to_csv('Output.csv')
 
-# %%
 
-# engine = sqlalchemy.create_engine('postgresql://postgres:1234@localhost:5432/db_sample')
-# df_prediction.to_sql('tbl_model_simulation', 
-#                     con = engine,
-#                     if_exists='replace',
-#                     index = False,
-#                     dtype={'Actual':sqlalchemy.types.INT,
-#                            'Prediction':sqlalchemy.types.INT,
-#                            'GridSearchParameters':sqlalchemy.types.JSON,
-#                            'GridSearchBestParameters':sqlalchemy.types.JSON})
 
 
 # %%

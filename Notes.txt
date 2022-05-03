@@ -1,0 +1,2 @@
+1. To create requirements.txt file run pipreqs in the terminal
+2. To create a distribution files run >>> python setup.py sdist <<< in the terminal

@@ -32,43 +32,37 @@ import numpy as np
 from datetime import datetime
 import json
 
-def func_dict_list_class_ml_classifier_models_format():
+def func_dict_list_class_ml_classifier_models( RandomForestClassifier =  {},
+                                                MLPClassifier = {},
+                                                GradientBoostingClassifier = {},
+                                                SVC = {},
+                                                LinearDiscriminantAnalysis  = {},
+                                                RidgeClassifier = {},
+                                                SGDClassifier  = {},
+                                                KNeighborsClassifier = {},
+                                                GaussianProcessClassifier = {},
+                                                GaussianNB = {},
+                                                BernoulliNB = {},
+                                                DecisionTreeClassifier = {},
+                                                ExtraTreesClassifier = {},
+                                                AdaBoostClassifier = {}):
     
-    nparray_n_estimators = list(np.arange(1,10,1, dtype=int))
-    nparray_max_depth = list(np.arange(1,10,1, dtype=int))
+    dict_list_class_ml_classifier_models = {'RandomForestClassifier': RandomForestClassifier,
+                                            'MLPClassifier': MLPClassifier,
+                                            'GradientBoostingClassifier': GradientBoostingClassifier,
+                                            'SVC': SVC,
+                                            'LinearDiscriminantAnalysis': LinearDiscriminantAnalysis,
+                                            'RidgeClassifier': RidgeClassifier,
+                                            'SGDClassifier': SGDClassifier,
+                                            'KNeighborsClassifier': KNeighborsClassifier,
+                                            'GaussianProcessClassifier': GaussianProcessClassifier,
+                                            'GaussianNB': GaussianNB,
+                                            'BernoulliNB': BernoulliNB,
+                                            'DecisionTreeClassifier': DecisionTreeClassifier,
+                                            'ExtraTreesClassifier': ExtraTreesClassifier,
+                                            'AdaBoostClassifier': AdaBoostClassifier}
 
-    dict_list_class_ml_classifier_models = { 0: [RandomForestClassifier, 
-                                            {'n_estimators':nparray_n_estimators,
-                                            'max_depth':nparray_max_depth
-                                            }
-                                            ],
-                                            1: [MLPClassifier,
-                                                        {}],
-                                            2: [GradientBoostingClassifier,
-                                                        {}],
-                                            3: [SVC,
-                                                        {}],
-                                            4: [LinearDiscriminantAnalysis,
-                                                        {}],
-                                            5: [RidgeClassifier,
-                                                        {}],
-                                            6: [SGDClassifier,
-                                                        {}],
-                                            7: [KNeighborsClassifier,
-                                                        {}],
-                                            8: [GaussianProcessClassifier,
-                                                        {}],
-                                            9: [GaussianNB,
-                                                        {}],
-                                            10: [BernoulliNB,
-                                                        {}],
-                                            11: [DecisionTreeClassifier,
-                                                        {}],
-                                            12: [ExtraTreesClassifier,
-                                                        {}],
-                                            13: [AdaBoostClassifier,
-                                                        {}]
-                                            }
+
     return dict_list_class_ml_classifier_models
 
 
@@ -121,6 +115,36 @@ def func_run_model(x_train = None,
     
     return df_prediction
 
+#%%
+def func_df_run_all_models(dict_list_class_ml_classifier_models = None,
+                           x_train = None,
+                           y_train = None,
+                           x_test = None,
+                           y_test = None):
+
+    df_prediction = pd.DataFrame({})
+    for keys, dict_class_models in dict_list_class_ml_classifier_models.items():
+        class_model = globals()[keys]
+        dict_list_hyperparameters = dict_class_models
+        
+        print(class_model.__name__)
+        
+        df_temp = func_run_model(x_train = x_train,
+                                        x_test = x_test,
+                                        y_train = y_train,
+                                        y_test = y_test,
+                                        bool_include_x_train_independent_variables = False,
+                                        class_machine_learning_model = class_model,
+                                        **dict_list_hyperparameters)
+
+        df_prediction = df_prediction.append(df_temp,
+                                            ignore_index=True)
+        
+    df_prediction['RunDate'] = datetime.today().strftime('%Y-%m-%d')
+    df_prediction['RunTime'] = datetime.today().strftime('%H:%M:%S')
+   
+    return df_prediction
+
 
 #%%
 
@@ -131,78 +155,24 @@ if __name__ == '__main__':
     x_train, x_test, y_train, y_test = train_test_split(x,y, 
                                                     train_size = 0.50,
                                                     shuffle= False)
+    #%% You can manually edit the hyper parameters
+    nparray_n_estimators = list(np.arange(1,10,1, dtype=int))
+    nparray_max_depth = list(np.arange(1,10,1, dtype=int))
     
-    
-    
-    
-#%%
-#%% Use this function to get the dictionary format at which you can manually edit the list of hyper parameters
-dict_list_class_ml_classifier_models = func_dict_list_class_ml_classifier_models_format()
+    #%% Use this function to get the dictionary format at which you can manually edit the list of hyper parameters
+    dict_list_class_ml_classifier_models = func_dict_list_class_ml_classifier_models(RandomForestClassifier = {'n_estimators':nparray_n_estimators,
+                                                                                                                'max_depth':nparray_max_depth
+                                                                                                                })
+    print(dict_list_class_ml_classifier_models)
 
-#%% You can manually edit the hyper parameters
-nparray_n_estimators = list(np.arange(1,10,1, dtype=int))
-nparray_max_depth = list(np.arange(1,10,1, dtype=int))
-
-dict_list_class_ml_classifier_models = { 0: [RandomForestClassifier, 
-                                        {'n_estimators':nparray_n_estimators,
-                                        'max_depth':nparray_max_depth
-                                        }
-                                        ],
-                                        1: [MLPClassifier,
-                                                    {}],
-                                        2: [GradientBoostingClassifier,
-                                                    {}],
-                                        3: [SVC,
-                                                    {}],
-                                        4: [LinearDiscriminantAnalysis,
-                                                    {}],
-                                        5: [RidgeClassifier,
-                                                    {}],
-                                        6: [SGDClassifier,
-                                                    {}],
-                                        7: [KNeighborsClassifier,
-                                                    {}],
-                                        8: [GaussianProcessClassifier,
-                                                    {}],
-                                        9: [GaussianNB,
-                                                    {}],
-                                        10: [BernoulliNB,
-                                                    {}],
-                                        11: [DecisionTreeClassifier,
-                                                    {}],
-                                        12: [ExtraTreesClassifier,
-                                                    {}],
-                                        13: [AdaBoostClassifier,
-                                                    {}]
-                                        }
+    df_prediction = func_df_run_all_models( dict_list_class_ml_classifier_models = dict_list_class_ml_classifier_models,
+                                            x_train = x_train,
+                                            y_train = y_train,
+                                            x_test = x_test,
+                                            y_test = y_test)
 
 
 
 
-df_prediction = pd.DataFrame({})
-for keys, tuple_class_models in dict_list_class_ml_classifier_models.items():
-    class_model = tuple_class_models[0]
-    dict_list_hyperparameters = tuple_class_models[1]
-    
-    print(class_model.__name__)
-    
-    df_temp = func_run_model(x_train = x_train,
-                                    x_test = x_test,
-                                    y_train = y_train,
-                                    y_test = y_test,
-                                    bool_include_x_train_independent_variables = False,
-                                    class_machine_learning_model = class_model,
-                                    **dict_list_hyperparameters)
-
-    df_prediction = df_prediction.append(df_temp,
-                                         ignore_index=True)
-    
-df_prediction['RunDate'] = datetime.today().strftime('%Y-%m-%d')
-df_prediction['RunTime'] = datetime.today().strftime('%H:%M:%S')
-df_prediction.to_csv('Output.csv')
-
-
-
-
-# %%
+    # %%
 

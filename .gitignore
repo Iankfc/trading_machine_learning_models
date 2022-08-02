@@ -1,1 +1,4 @@
 __pycache__
+.eggs/
+trading_machine_learning_models.egg-info/
+*.egg-info

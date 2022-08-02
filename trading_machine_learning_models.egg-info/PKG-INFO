@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: trading-machine-learning-models
-Version: 1.0.1.dev0+g71582bf.d20220503
+Version: 1.0.1.dev5+g0d13801
 Summary: trading_machine_learning_models modules is a Python package that can run multiple pre-determined machine learning models. The package allows you to set a multiple set of values for hyper-parameter tuning.
 Home-page: https://github.com/Iankfc/trading_machine_learning_models
 Author: ece

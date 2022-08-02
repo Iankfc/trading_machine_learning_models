@@ -9,7 +9,7 @@ except Exception:
 
 
 
-__version__ = '2.0.0'
+__version__ = '1.0.0'
 __doc__ = """
 traiding_machine_learning_models - a powerful data analysis and manipulation library for Python
 =====================================================================
